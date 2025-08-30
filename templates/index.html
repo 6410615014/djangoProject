@@ -1,0 +1,23 @@
+{% extends "layouts/base.html" %}
+{% block title %}Index Page{% endblock %}
+{% block content %}
+    <h1>Hello, index page!</h1>
+    <p>ID: {{id}}</p>
+    <p>Name: {{name}}</p>
+    <p>Email: {{email}}</p>
+    <ul>
+        {% for a in activities %}
+        <li>{{a}}</li>
+        {% endfor %}
+    </ul>
+    {% if id == '001' and name == 'aomnaiiii' %}
+        <h2>เข้าสู่ระบบสำเร็จ</h2>
+    {% else %}
+        <h2>เข้าสู่ระบบล้มเหลว</h2>
+    {% endif %}
+
+    <a href="{% url 'myapp:index' %}">Go to Index</a><br>
+    <a href="{% url 'myapp:hello' id=123 %}">Go to Hello</a><br>
+    <a href="{% url 'myapp:article' year=2024 slug='my-first-article' %}">Go to Article</a><br>
+    <a href="{% url 'book:index' %}">Go to Book page</a>
+{% endblock %}

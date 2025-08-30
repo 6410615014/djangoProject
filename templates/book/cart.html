@@ -1,0 +1,35 @@
+{% extends "layouts/base.html" %}
+{% load humanize %}
+{% load crispy_forms_tags %}
+{% block title %}Shopping Cart{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="col-lg-6 offset-lg-3">
+        <h1>Cart List</h1>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Book Title</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in cart_items %}
+                <tr>
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.qty }}</td>
+                    <td>{{ item.price|floatformat:2|intcomma }}</td>
+                    <td>
+                        <a href="{% url 'book:cart_delete' slug=item.slug %}" class="btn btn-danger">Remove</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <a href="{% url 'book:cart_checkout' %}" class="btn btn-primary btn-lg float-right">Checkout</a>
+    </div>
+</div>
+
+{% endblock %}

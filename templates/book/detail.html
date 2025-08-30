@@ -1,0 +1,29 @@
+{% extends "layouts/base.html" %}
+{% load humanize %}
+{% block title %}Book detail{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="col-lg-2">
+        {% if book.image %}
+        <img src="{{ book.image.url }}" alt="{{ book.title }}" class="img-fluid mb-4">
+        {% endif %}
+    </div>
+    <div class="col-lg-10">
+        <h1>{{ book.name }}</h1>
+        <div>Category: {{ book.category.name }}</div>
+        <div>Price: {{ book.price|floatformat:2|intcomma }}</div>
+        <a href="{% url 'book:cart_add' slug=book.slug %}" class="btn btn-success mt-4">Add to Cart</a>
+    </div>
+</div>
+<a href="{% url 'book:index' %}">Back to Book List</a>
+
+<h1>Comment ({{ book.get_comment_count }})</h1>
+{% for c in book.bookcomment_set.all %}
+<div class="card mb-4">
+    <h5>{{c.comment}}</h5>
+    <div>Rating: {{c.rating}}</div>
+</div>
+
+{% endfor %}
+
+{% endblock %}

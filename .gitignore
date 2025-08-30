@@ -1,0 +1,16 @@
+# Virtual environment
+testenv/
+
+# Byte-compiled / cached files
+*.py[cod]
+__pycache__/
+
+# Database
+db.sqlite3
+
+# Media files
+media/
+
+# Django migrations (optional)
+*/migrations/*.py
+*/migrations/*.pyc

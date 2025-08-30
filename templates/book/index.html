@@ -1,0 +1,65 @@
+{% extends "layouts/base.html" %}
+{% load humanize %}
+{% block title %}Book Page{% endblock %}
+{% block content %}
+<h1>Book List</h1>
+<a href="{% url 'book:book_add' %}" class="btn btn-warning mb-4">Add New Book</a>
+<hr>
+<div class="row">
+    <!-- Sidebar -->
+    <div class="col-lg-2">
+        <div class="list-group">
+            <a href="{% url 'book:index' %}" 
+               class="list-group-item list-group-item-action {% if not categ_id %}active{% endif %}" 
+               aria-current="true">
+                All
+            </a>
+            {% for c in categories %}
+            <a href="{% url 'book:index' %}?categoryid={{ c.id }}" 
+               class="list-group-item list-group-item-action {% if categ_id|add:'0' == c.id %}active{% endif %}">
+                {{ c.name }}
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Main content -->
+    <div class="col-lg-10">
+        <div class="row">
+            {% for book in books %} 
+            <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                <div class="card h-100 mb-4">
+                    <a href="{% url 'book:detail' slug=book.slug %}">
+                        {% if book.image %}
+                            <img src="{{ book.image.url }}" alt="{{ book.title }}" class="card-img-top">
+                        {% endif %}
+                    </a>
+                    <div class="card-body">
+                        <h5><a href="{% url 'book:detail' slug=book.slug %}">{{ book.name }}</a></h5>
+                        <div>Category: {{ book.category.name }}</div>
+                        <div>Price: {{ book.price|floatformat:2|intcomma }}</div> <!-- Format price with commas -->
+                        <div>Author:</div>
+                        {% for a in book.authors.all %}
+                        <span class="badge bg-secondary">{{ a.name }}</span>
+                        {% endfor %}
+                        <br>
+                        <a href="{% url 'book:detail' slug=book.slug %}" class="btn btn-info mt-4">View Details</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <ul class="pagination">
+            {% if page_obj.has_previous %}
+            <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a></li>
+            {% endif %}
+            {% for i in page_obj.paginator.page_range %}
+            <li class="page-item {% if page_obj.number == i %} active {% endif %}"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+            {% endfor %}
+            {% if page_obj.has_next %}
+            <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a></li>
+            {% endif %}
+        </ul>
+    </div>
+</div>
+{% endblock %}
